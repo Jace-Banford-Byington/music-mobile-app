@@ -1,121 +1,65 @@
 import 'package:flutter/material.dart';
 
-void main()  =>runApp(const MyApp());
-
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-@override
-Widget build(BuildContext context){
-  const String appTitle = "Music App";
-  return MaterialApp(
-    title: appTitle,
-    home: 
-      Scaffold(
-          appBar: AppBar(
-            title: const Text(appTitle),
-          ),
-          body: const SingleChildScrollView(
-            child: Column(
-              children: [
-                  ButtonSection(),
-              ],
-            ),
-          ),
-      ),
-  );
-}
-
-
-
-}
-
-
-class HistoryTitle extends StatelessWidget {
-  const HistoryTitle({
-    super.key,
-    required this.label,
-    required this.image
-    });
-
-  final String label;
-  final Image image;
-
-
-@override
-  Widget build(BuildContext context){
-    return 
-  }
-}
-
-
-class ButtonSection extends StatelessWidget {
-  const ButtonSection({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
-    final Color color = Theme.of(context).primaryColorDark;
-        return SizedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ButtonWithText(
-            color: color,
-            icon: Icons.home,
-            label: 'Home',
-          ),
-          ButtonWithText(
-            color: color,
-            icon: Icons.search,
-            label: 'Search',
-          ),
-          ButtonWithText(
-            color: color,
-            icon: Icons.library_music,
-            label: 'Library',
-          ),
-        ],
-      ),
-    );
-
-
-
-  }
-}
-
-class ButtonWithText extends StatelessWidget{
-  const ButtonWithText({
-    super.key,
-    required this.color,
-    required this.icon,
-    required this.label,
-  });
-
-  final Color color;
-  final IconData icon;
-  final String label;
-
-@override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
+    const String appTitle = "Music App";
+    return MaterialApp(
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(appTitle),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text("Welcome to the Crow Moon music app"),
+              Text("Recently visited"),
+              Text("Recently Played"),
+              Text("Currently playing"),
+              Image.network(
+                'https://www.themilfordmessenger.com/wp-content/uploads/2022/04/mother_mother_inside_artwork.jpg',
+                width: 200,
+                height: 200,
+              ),
+            ],
           ),
         ),
-      ],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 1,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+            BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
+            BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), label: "Library")
+          ],
+        ),
+      ),
     );
   }
 }
 
+
+// Container CurrentlyPlaying ()
+//The album image 
+//The song playing 
+//the band 
+//icon if you liked it 
+//Paused button (or play if it is currently playing)
+
+
+
+
+//#4E5873 light bli
+//#2F3841 grey 
+//#2F3841 black
+//#483D4D bbrowning 
+//#1D2C27 green
+
+//Method that takes the users current time and has it change between 
+//"Good morning" if beforen noon
+//"Good Afternoon" if 1 - 4
+//"Good Evening" 5-midnignht
