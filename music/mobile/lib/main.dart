@@ -14,25 +14,23 @@ class _ProfileState extends State<Profile>{
 @override
   Widget build(BuildContext context){
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 2,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(icon: Icon(Icons.home_filled,), label: "Home",),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.library_music_outlined), 
-              label: "Library",
-              )
-          ],
-          onTap:(value) => {
-            Navigator.push(context,MaterialPageRoute(builder: (context) => Profile()))
-          },
-        )
+      appBar: AppBar(
+        actions: [
+          BackButton(
+            onPressed: () => {
+              Navigator.pop(context)
+            },
+          )
+        ],
+      ),
+          
     );
   }
 
 }
 
+
+ 
 
 
 
