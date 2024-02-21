@@ -8,11 +8,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const String appTitle = "Music App";
-    final Color backgroundColor = const Color(0xFF6b8094); 
-    final Color textColor = const Color(0xFF191921);
-        final Color textColor2 = const Color(0xFF483D4D);
+    const Color backgroundColor = Color(0xFF6b8094); 
+    const Color textColor = Color(0xFF191921);
+        const Color textColor2 = Color(0xFF483D4D);
 
-    final Color navColor = const Color(0xFF556575);
+    const Color navColor = Color(0xFF556575);
 
     return MaterialApp(
       title: appTitle,
