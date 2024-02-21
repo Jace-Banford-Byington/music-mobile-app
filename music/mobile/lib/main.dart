@@ -2,6 +2,40 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+class Profile extends StatefulWidget{
+  const Profile({super.key});
+
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+int _currentIndex = 1;
+class _ProfileState extends State<Profile>{
+  
+@override
+  Widget build(BuildContext context){
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 2,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+            BottomNavigationBarItem(icon: Icon(Icons.home_filled,), label: "Home",),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.library_music_outlined), 
+              label: "Library",
+              )
+          ],
+          onTap:(value) => {
+            Navigator.push(context,MaterialPageRoute(builder: (context) => Profile()))
+          },
+        )
+    );
+  }
+
+}
+
+
+
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -28,9 +62,65 @@ class MyApp extends StatelessWidget {
           child: Column(
             children: [
               Text("Welcome to the Crow Moon music app",style: TextStyle(color: textColor),),
-              Text("Recently visited",style: TextStyle(color: textColor),),
               Text("Recently Played",style: TextStyle(color: textColor),),
-              
+              // GridView.count(
+                
+              //   crossAxisCount: 2,
+              //   shrinkWrap: true,
+              //   physics: NeverScrollableScrollPhysics(),
+              //   children: List.generate(
+              //     6,(index){
+              //       String image ='';
+              //       String label ='';
+              //       switch(index){
+              //         case 0:
+              //           image = "Hi";
+              //           label = "Mother Mother";
+              //           break;
+              //         case 1:
+              //           image = "Hi";
+              //           label = "Mother Mother";
+              //           break;
+              //         case 2:
+              //           image = "Hi";
+              //           label = "Mother Mother";
+              //           break;
+              //         case 3:
+              //           image = "Hi";
+              //           label = "Mother Mother";
+              //           break;
+              //         case 4:
+              //           image = "Hi";
+              //           label = "Mother Mother";
+              //           break;
+              //         case 5:
+              //           image = "Hi";
+              //           label = "Mother Mother";
+              //           break;
+              //       }
+              //     }
+              //     return GuestureDetector(
+              //       onTap: () {
+              //         print('Box $index clicked');
+              //         },
+              //         child: Container(
+              //           margin: const EdgeInsets.all(6),
+              //           decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(10),
+              //             color: Colors.white,
+              //             boxShadow: [
+              //               BoxShadow(
+              //                 color: Colors.grey.withOpacity(0.5),
+              //                 spreadRadius: 1,
+              //                 blurRadius: 2,
+              //                 offset: const Offset(3, 3),
+              //               ),
+              //             ],
+              //           ),
+              //     )
+              //   )
+              // ),
+             
               Container(
                 width: double.infinity, // Width spans the entire screen
                 color: Colors.brown[300], // Example background color
@@ -68,7 +158,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HistoryCard extends StatelessWidget {
-     final Image image;
+     final String image; //Temparaily a string to simply see if it shows up properly
     final String label; 
 
     const HistoryCard ({
@@ -78,21 +168,25 @@ class HistoryCard extends StatelessWidget {
 
    @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8.0), // Add margin around each grid item
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0), // Add border radius
-        border: Border.all(color: Colors.black, width: 2.0), // Add border
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+   return SizedBox(
+      width: 20, // Adjust width according to your requirement
+      height: 10, // Adjust height according to your requirement
+      child: Container(
+        margin: EdgeInsets.all(6.0), // Add margin around each grid item
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6.0), // Add border radius
+          border: Border.all(color: Colors.black, width: 2.0), // Add border
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
   }
-}
+} 
 
 // Container CurrentlyPlaying ()
 //The album image 
