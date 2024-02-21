@@ -67,6 +67,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class HistoryCard extends StatelessWidget {
+     final Image image;
+    final String label; 
+
+    const HistoryCard ({
+      required this.image,
+      required this.label,
+    });
+
+   @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(8.0), // Add margin around each grid item
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0), // Add border radius
+        border: Border.all(color: Colors.black, width: 2.0), // Add border
+      ),
+      child: Center(
+        child: Text(
+          label,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
 
 // Container CurrentlyPlaying ()
 //The album image 
