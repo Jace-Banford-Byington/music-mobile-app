@@ -1,38 +1,6 @@
 import 'package:flutter/material.dart';
-
+import "package:mobile/common/main.dart";
 void main() => runApp(MyApp());
-
-class Profile extends StatefulWidget{
-  const Profile({super.key});
-
-  @override
-  _ProfileState createState() => _ProfileState();
-}
-int _currentIndex = 1;
-class _ProfileState extends State<Profile>{
-  
-@override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          BackButton(
-            onPressed: () => {
-              Navigator.pop(context)
-            },
-          )
-        ],
-      ),
-          
-    );
-  }
-
-}
-
-
- 
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
