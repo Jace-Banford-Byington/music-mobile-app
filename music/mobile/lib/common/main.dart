@@ -8,11 +8,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const String appTitle = "Music App";
-    const Color backgroundColor = Color(0xFF6b8094); 
-    const Color textColor = Color(0xFF191921);
-        const Color textColor2 = Color(0xFF483D4D);
+    const Color backgroundColor = Color(0xFF121212); 
+    const Color textColor = Color(0xFF610094);
+        const Color textColor2 = Color(0xFF610094);
 
-    const Color navColor = Color(0xFF556575);
+    const Color navColor = Color(0xFF150050);
 
     return MaterialApp(
       title: appTitle,
@@ -162,14 +162,6 @@ class HistoryCard extends StatelessWidget {
 //Paused button (or play if it is currently playing)
 
 
-
-
-//#4E5873 light bli
-//#2F3841 grey 
-//#2F3841 black
-//#483D4D bbrowning 
-//#1D2C27 green
-//646D72
 
 //Method that takes the users current time and has it change between 
 //"Good morning" if beforen noon
