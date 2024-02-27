@@ -40,8 +40,8 @@ class NavigationPage extends StatelessWidget {
         return MainScreen();
       case 1:
         return SettingsPage();
-      // case 2:
-      //   return Profile(); 
+      case 2:
+        return Profile(isChecked: null,); 
       default:
         return MainScreen();
     }
