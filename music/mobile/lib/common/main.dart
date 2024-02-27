@@ -5,8 +5,6 @@ import 'package:mobile/common/profile.dart';
 import 'package:mobile/common/settings.dart';
 import 'package:provider/provider.dart';
 
-import 'package:http/http.dart' as http;
-
 void main() {
   runApp(
     ChangeNotifierProvider(
