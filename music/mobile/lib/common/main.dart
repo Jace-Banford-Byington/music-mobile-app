@@ -22,8 +22,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Music App',
       theme: Provider.of<ThemeProvider>(context).theme,      
-      home: MainScreen(), 
-    );
+     home: MainScreen() ,
+     );
+   
   }
 }
 
@@ -38,14 +39,57 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   @override
+   Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Display the history card
+        HistoryCard(
+          image: Image.asset('your_image_asset_path'), // Replace 'your_image_asset_path' with the actual path to your image asset
+          label: 'Listening History Item 1', // Add a label for the history card
+        ),
+        HistoryCard(
+          image: Image.asset('your_image_asset_path'), // Replace 'your_image_asset_path' with the actual path to your image asset
+          label: 'Listening History Item 2', // Add a label for the history card
+        ),
+        Expanded(
+          child: NavigationPage(
+            selectedIndex: 0, // Set the initial selected index for the navigation page
+            onItemTapped: (index) {
+               print('Item tapped: $index');
+              
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+class HistoryCard extends StatelessWidget {
+     final Image image;
+    final String label; 
+
+    const HistoryCard ({
+      required this.image,
+      required this.label,
+    });
+
+   @override
   Widget build(BuildContext context) {
-    return NavigationPage(
-      selectedIndex: _selectedIndex,
-      onItemTapped: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
+    return Container(
+      margin: EdgeInsets.all(8.0), // Add margin around each grid item
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0), // Add border radius
+        border: Border.all(color: Colors.blue, width: 2.0), // Add border
+      ),
+      child: Center(
+        child: Text(
+          label,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }
