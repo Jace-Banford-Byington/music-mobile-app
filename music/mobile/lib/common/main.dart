@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Music App',
-      theme: Provider.of<ThemeProvider>(context).theme,
-      home: MainScreen(),
-    );
+      theme: Provider.of<ThemeProvider>(context).theme,      
+     home: MainScreen() ,
+     );
+   
   }
 }
 
@@ -38,83 +39,56 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Main Screen'),
+   Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Display the history card
+        HistoryCard(
+          image: Image.asset('your_image_asset_path'), // Replace 'your_image_asset_path' with the actual path to your image asset
+          label: 'Listening History Item 1', // Add a label for the history card
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            HistoryCard(
-              image: 'https://picsum.photos/200',
-              label: 'Listening History Item 1',
-            ),
-            HistoryCard(
-              image: 'https://picsum.photos/200',
-              label: 'Listening History Item 2',
-            ),
-            Expanded(
-              child: NavigationPage(
-                selectedIndex: _selectedIndex,
-                onItemTapped: (index) => _handleNavigation(context, index),
-              ),
-            ),
-          ],
+        HistoryCard(
+          image: Image.asset('your_image_asset_path'), // Replace 'your_image_asset_path' with the actual path to your image asset
+          label: 'Listening History Item 2', // Add a label for the history card
         ),
-      ),
+        Expanded(
+          child: NavigationPage(
+            selectedIndex: 0, // Set the initial selected index for the navigation page
+            onItemTapped: (index) {
+               print('Item tapped: $index');
+              
+            },
+          ),
+        ),
+      ],
     );
-  }
-
-  void _handleNavigation(BuildContext context, int index) {
-    print('Item tapped: $index');
-    setState(() {
-      _selectedIndex = index;
-    });
-    // Perform navigation based on the index
-    if (index == 0) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainScreen()));
-    } else if (index == 1) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
-    } else if (index == 2) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profile()));
-    }
   }
 }
 
+
 class HistoryCard extends StatelessWidget {
-  final String image;
-  final String label; 
+     final Image image;
+    final String label; 
 
-  const HistoryCard ({
-    required this.image,
-    required this.label,
-  });
+    const HistoryCard ({
+      required this.image,
+      required this.label,
+    });
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8.0),
+      margin: EdgeInsets.all(8.0), // Add margin around each grid item
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.blue, width: 2.0),
+        borderRadius: BorderRadius.circular(8.0), // Add border radius
+        border: Border.all(color: Colors.blue, width: 2.0), // Add border
       ),
-      child: Column(
-        children: [
-          Image.network(
-            image,
-            width: 200, // Adjust width as needed
-            height: 200, // Adjust height as needed
-          ),
-          SizedBox(height: 10),
-          Center(
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+      child: Center(
+        child: Text(
+          label,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
