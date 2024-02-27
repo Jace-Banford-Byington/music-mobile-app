@@ -8,23 +8,46 @@ import 'package:flutter/material.dart';
 //610094 lightest purple
 //baby purple A367B1
 
-class DarkMode {
-  Color backgroundColor = Color(0xFF121212); //background color 
-  Color navBarBack = Color(0xFF150050); //Nav Background color 
-  Color navTextColor = Color(0xFFA367B1); //Text Nav color 
-  Color textColor = Color(0xFF610094);
+class ThemeProvider with ChangeNotifier{
+  bool isDarkMode = true; //Dark on as default
 
-}
+  ThemeData get theme => isDarkMode ? getDarkMode() : getLighMode();
 
-class lightMode {
-  Color backgroundColor = Color(0xFF624F82); //background color 
-  Color navBarBack = Color(0xFF9F73AB); //Nav Background color 
-  Color navTextColor = Color(0xFF9F73AB); //Text Nav color 
-  Color textColor = Color(0xFFA3C7D6);
+  void toggleTheme() {
+    isDarkMode = !isDarkMode;
+    notifyListeners();
+  }
 }
 
 
 
+ThemeData getDarkMode() {
+  return ThemeData(
+    scaffoldBackgroundColor: Color(0xFF121212), //Background
+  appBarTheme: AppBarTheme(
+    color: Color(0xFF150050), //Nav Bar
+  ),
+  textTheme: TextTheme(
+    bodyText1: TextStyle(color: Color(0xFFA367B1)), //Nav Text
+    bodyText2: TextStyle(color: Color(0xFF610094)) //Text 
+  ),
+  );
+}
+
+
+
+ThemeData getLighMode() {
+  return ThemeData(
+    scaffoldBackgroundColor: Color(0xFF624F82),
+    appBarTheme: AppBarTheme(
+      color:  Color(0xFF9F73AB),
+    ),
+    textTheme: TextTheme(
+      bodyText1: TextStyle(color: Color(0xFF9F73AB)),
+      bodyText2: TextStyle(color: Color(0xFFA3C7D6)),
+    ),
+  );
+}
 
 
 //Light Mode : 

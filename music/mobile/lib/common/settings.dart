@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/common/colortheme.dart';
+import 'package:provider/provider.dart'; // Add this import
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -47,12 +49,15 @@ class _SettingsPageState extends State<SettingsPage> {
               'Dark Mode',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SwitchListTile(
-              title: Text('Enable Dark Mode'),
-              value: _isDarkMode,
-              onChanged: (value) async {
-                await _toggleTheme(value);
-              },
+            Consumer<ThemeProvider>(
+              builder: (context, themeProvider, child) => SwitchListTile(
+                title: Text('Enable Dark Mode'),
+                value: themeProvider.isDarkMode, // Access isDarkMode directly
+                onChanged: (value) async {
+                  await _toggleTheme(value);
+                  themeProvider.toggleTheme();
+                },
+              ),
             ),
           ],
         ),

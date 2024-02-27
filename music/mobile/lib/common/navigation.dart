@@ -1,35 +1,21 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // Import main
-import 'settings.dart'; // Import settings
+import 'package:mobile/common/main.dart';
+import 'package:mobile/common/settings.dart';
+import 'package:mobile/common/profile.dart';
 
-class NavigationPage extends StatefulWidget {
-  const NavigationPage({Key? key}) : super(key: key);
+class NavigationPage extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemTapped;
 
-  @override
-  _NavigationPageState createState() => _NavigationPageState();
-}
-
-class _NavigationPageState extends State<NavigationPage> {
-  int _selectedIndex = 0;
-
-  static final List<Widget> _pages = <Widget>[
-    MyApp(), // Use MainPage here
-    SettingsPage(), // Use SettingsPage here
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  const NavigationPage({Key? key, required this.selectedIndex, required this.onItemTapped}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: _getBody(selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: selectedIndex,
+        onTap: onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -39,8 +25,25 @@ class _NavigationPageState extends State<NavigationPage> {
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.picture_as_pdf_rounded),
+            label: 'Profile'
+          ),
         ],
       ),
     );
+  }
+
+  Widget _getBody(int index) {
+    switch (index) {
+      case 0:
+        return MainScreen();
+      case 1:
+        return SettingsPage();
+      // case 2:
+      //   return Profile(); 
+      default:
+        return MainScreen();
+    }
   }
 }
