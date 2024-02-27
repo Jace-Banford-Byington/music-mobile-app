@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/common/colortheme.dart';
 import 'package:mobile/common/navigation.dart';
+import 'package:mobile/common/profile.dart';
+import 'package:mobile/common/settings.dart';
 import 'package:provider/provider.dart';
 
 void main() {

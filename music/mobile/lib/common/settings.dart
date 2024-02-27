@@ -38,7 +38,24 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text('Settings',
+        style:
+        TextStyle(
+          fontSize: 30, 
+          fontWeight: FontWeight.w800, 
+          color:  Theme.of(context).textTheme.bodyLarge!.color ), 
+        ),
+       leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        style: ButtonStyle(
+          iconColor: MaterialStateProperty.all<Color?>(
+            Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -51,8 +68,11 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Consumer<ThemeProvider>(
               builder: (context, themeProvider, child) => SwitchListTile(
-                title: Text('Enable Dark Mode'),
+                title: Text('Enable Light Mode', 
+                style: Theme.of(context).textTheme.bodySmall,
+                ),
                 value: themeProvider.isDarkMode, // Access isDarkMode directly
+                
                 onChanged: (value) async {
                   await _toggleTheme(value);
                   themeProvider.toggleTheme();
