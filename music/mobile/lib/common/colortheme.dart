@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 class ThemeProvider with ChangeNotifier{
   bool isDarkMode = true; //Dark on as default
 
-  ThemeData get theme => isDarkMode ? getDarkMode() : getLighMode();
+  ThemeData get theme => isDarkMode ? getDarkMode() : getLightMode();
 
   void toggleTheme() {
     isDarkMode = !isDarkMode;
@@ -36,7 +36,7 @@ ThemeData getDarkMode() {
 
 
 
-ThemeData getLighMode() {
+ThemeData getLightMode() {
   return ThemeData(
     scaffoldBackgroundColor: Color(0xFF624F82),
     appBarTheme: AppBarTheme(
