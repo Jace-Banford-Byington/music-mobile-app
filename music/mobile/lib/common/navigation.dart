@@ -36,12 +36,12 @@ class NavigationPage extends StatelessWidget {
 
   Widget _getBody(int index) {
     switch (index) {
+      // case 0:
+      //   return MainScreen();
       case 0:
-        return MainScreen();
-      case 1:
         return SettingsPage();
-      case 2:
-        return Profile(isChecked: true); 
+      // case 2:
+      //   return Profile(isChecked: true); 
       default:
         return Container(); // Return an empty container if index is out of bounds
     }

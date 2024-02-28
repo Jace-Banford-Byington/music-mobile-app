@@ -31,20 +31,30 @@ class Song {
     required this.url,
     required this.md5,
   });
+factory Song.fromJson(Map<String, dynamic> json) {
+  // Check if the 'data' field exists in the JSON response
+  if (json.containsKey('data')) {
+    // Access the 'data' field which contains an array of songs
+    final List<dynamic> songsData = json['data'];
 
-  factory Song.fromJson(Map<String, dynamic> json){
-    final int id = json['id'] as int;
-    final String title = json['title'] as String;
-    final String url = json['link'] as String;
-    final String md5 = json['md5_image'] as String;
+    // extract the first song from the array
+    if (songsData.isNotEmpty) {
+      final Map<String, dynamic> firstSongData = songsData[0];
 
-    if (id != null && title != null && url != null && md5 != null) {
+    
+      final int id = firstSongData['id'] as int;
+      final String title = firstSongData['title'] as String;
+      final String url = firstSongData['link'] as String;
+      final String md5 = firstSongData['md5_image'] as String;
+
       return Song(id: id, title: title, url: url, md5: md5);
-    } else {
-      throw FormatException('Failed to get Song');
     }
   }
+
+  // If 'data' field is not found or is empty, return a default Song object
+  return Song(id: 0, title: '', url: '', md5: '');
 }
+
 
 ///Go search for music : search / track
 ///https://api.deezer.com/search/track/${song}
@@ -58,3 +68,4 @@ class Song {
 ///
 ///go search for album : search / album
 ///https://api.deezer.com/search/album/${}
+}
