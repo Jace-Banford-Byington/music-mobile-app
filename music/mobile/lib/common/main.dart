@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/common/colortheme.dart';
+import 'package:mobile/common/music.dart';
 import 'package:mobile/common/navigation.dart';
 import 'package:mobile/common/profile.dart';
 import 'package:mobile/common/settings.dart';
 import 'package:provider/provider.dart';
+import 'package:mobile/common/music.dart';
 
 void main() {
   runApp(
@@ -21,10 +23,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Music App',
-      theme: Provider.of<ThemeProvider>(context).theme,      
-     home: MainScreen() ,
-     );
-   
+      theme: Provider.of<ThemeProvider>(context).theme,
+      home: MainScreen(),
+    );
   }
 }
 
@@ -39,50 +40,67 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   @override
-   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Display the history card
-        HistoryCard(
-          image: Image.asset('your_image_asset_path'), // Replace 'your_image_asset_path' with the actual path to your image asset
-          label: 'Listening History Item 1', // Add a label for the history card
-        ),
-        HistoryCard(
-          image: Image.asset('your_image_asset_path'), // Replace 'your_image_asset_path' with the actual path to your image asset
-          label: 'Listening History Item 2', // Add a label for the history card
-        ),
-        Expanded(
-          child: NavigationPage(
-            selectedIndex: 0, // Set the initial selected index for the navigation page
-            onItemTapped: (index) {
-               print('Item tapped: $index');
-              
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Music App'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Searching for a song titled "mother mother"
+          FutureBuilder<Song>(
+            future: searchSong(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // While waiting for the song to be fetched, display a loading indicator
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                // If there's an error fetching the song, display an error message
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                // If the song is fetched successfully, display it in a HistoryCard
+                final song = snapshot.data!;
+                return HistoryCard(
+                  image: Image.network(song.url), // Assuming url contains the image URL
+                  label: song.title,
+                );
+              }
             },
           ),
-        ),
-      ],
+          Expanded(
+            child: NavigationPage(
+              selectedIndex: 0,
+              onItemTapped: (index) {
+                print('Item tapped: $index');
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-
-
 class HistoryCard extends StatelessWidget {
-     final Image image;
-    final String label; 
+  final Image image;
+  final String label;
 
-    const HistoryCard ({
-      required this.image,
-      required this.label,
-    });
+  const HistoryCard({
+    required this.image,
+    required this.label,
+  });
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8.0), // Add margin around each grid item
+      margin: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0), // Add border radius
-        border: Border.all(color: Colors.blue, width: 2.0), // Add border
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.blue, width: 2.0),
       ),
       child: Center(
         child: Text(
