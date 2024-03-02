@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/common/colortheme.dart';
 import 'package:mobile/common/music.dart';
 import 'package:mobile/common/navigation.dart';
-import 'package:mobile/common/profile.dart';
-import 'package:mobile/common/settings.dart';
 import 'package:provider/provider.dart';
-import 'package:mobile/common/music.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile/common/settings.dart';
+import 'package:mobile/common/colortheme.dart' as ColorTheme;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final preferences = await SharedPreferences.getInstance();
+  bool isDarkMode = preferences.getBool('isDarkMode') ?? true;
   runApp(
     ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+      create: (context) => ColorTheme.ThemeProvider(initialDarkMode: isDarkMode),
       child: MyApp(),
     ),
   );
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Music App',
-      theme: Provider.of<ThemeProvider>(context).theme,
+      theme: Provider.of<ColorTheme.ThemeProvider>(context).theme,
       home: MainScreen(),
     );
   }
@@ -38,6 +40,26 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.ease);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,46 +67,75 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text('Music App'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         children: [
-          // Searching for a song titled "mother mother"
-          FutureBuilder<Song>(
-            future: searchSong(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // While waiting for the song to be fetched, display a loading indicator
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                // If there's an error fetching the song, display an error message
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
-                );
-              } else {
-                // If the song is fetched successfully, display it in a HistoryCard
-                final song = snapshot.data!;
-                return HistoryCard(
-                  image: Image.network(song.url), // Assuming url contains the image URL
-                  label: song.title,
-                );
-              }
-            },
+          HomeScreen(),
+          SettingsPage(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          Expanded(
-            child: NavigationPage(
-              selectedIndex: 0,
-              onItemTapped: (index) {
-                print('Item tapped: $index');
-              },
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
     );
   }
 }
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        FutureBuilder<List<Song>>(
+          future: searchSongs(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              final List<Song> songs = snapshot.data!;
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: songs.length,
+                  itemBuilder: (context, index) {
+                    final song = songs[index];
+                    return HistoryCard(
+                      image: Image.network(song.url),
+                      label: song.title,
+                    );
+                  },
+                ),
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class HistoryCard extends StatelessWidget {
   final Image image;
   final String label;

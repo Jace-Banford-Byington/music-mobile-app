@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/common/colortheme.dart';
 import 'package:provider/provider.dart'; // Add this import
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile/common/colortheme.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -20,15 +20,21 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _loadThemePreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isDarkMode = prefs.getBool('isDarkMode') ?? false;
-    });
+    final presences = await SharedPreferences.getInstance();
+    final bool? isDarkMode = presences.getBool('isDarkMode');
+    if (isDarkMode != null) {
+      setState(() {
+        _isDarkMode = isDarkMode;
+      });
+  }
   }
 
+
+
+
   Future<void> _toggleTheme(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDarkMode', value);
+    final presences = await SharedPreferences.getInstance();
+    await presences.setBool('isDarkMode', value);
     setState(() {
       _isDarkMode = value;
     });
@@ -68,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Consumer<ThemeProvider>(
               builder: (context, themeProvider, child) => SwitchListTile(
-                title: Text('Enable Light Mode', 
+                title: Text('Disable Dark Mode', 
                 style: Theme.of(context).textTheme.bodySmall,
                 ),
                 value: themeProvider.isDarkMode, // Access isDarkMode directly

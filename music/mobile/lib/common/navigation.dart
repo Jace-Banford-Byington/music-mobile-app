@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/common/main.dart';
 import 'package:mobile/common/settings.dart';
 import 'package:mobile/common/profile.dart';
 
-class NavigationPage extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onItemTapped;
+class NavigationPage extends StatefulWidget {
+  const NavigationPage({Key? key, 
+  required int selectedIndex, 
+  required Null Function(dynamic index) onItemTapped}) 
+  : super(key: key);
 
-  const NavigationPage({Key? key, required this.selectedIndex, required this.onItemTapped}) : super(key: key);
+  @override
+  _NavigationPageState createState() => _NavigationPageState();
+}
+
+class _NavigationPageState extends State<NavigationPage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getBody(selectedIndex),
+      body: _getBody(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: onItemTapped,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Main',
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.picture_as_pdf_rounded),
-            label: 'Profile'
+            label: 'Profile',
           ),
         ],
       ),
@@ -36,14 +42,29 @@ class NavigationPage extends StatelessWidget {
 
   Widget _getBody(int index) {
     switch (index) {
-      // case 0:
-      //   return MainScreen();
       case 0:
         return SettingsPage();
-      // case 2:
-      //   return Profile(isChecked: true); 
+      case 1:
+        return Profile(isChecked: true);
       default:
         return Container(); // Return an empty container if index is out of bounds
     }
+  }
+}
+
+class SettingsButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+        child: Text('Go to Settings'),
+      ),
+    );
   }
 }
