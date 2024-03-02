@@ -43,13 +43,16 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings',
-        style:
-        TextStyle(
-          fontSize: 30, 
-          fontWeight: FontWeight.w800, 
-          color:  Theme.of(context).textTheme.bodyLarge!.color ), 
+     appBar: AppBar(
+        title: Center(
+          child: Text(
+            'Settings',
+            style: TextStyle(
+              fontSize: 40, 
+              fontWeight: FontWeight.w800, 
+              color: Theme.of(context).textTheme.bodyLarge!.color
+            ), 
+          ),
         ),
        leading: IconButton(
         icon: Icon(Icons.arrow_back),
@@ -68,14 +71,24 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Dark Mode',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          Center(
+              child: Text(
+                'Dark Mode',
+                style: TextStyle(
+                  fontSize: 30, 
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textTheme.bodyMedium!.color,
+                ),
+              ),
             ),
             Consumer<ThemeProvider>(
               builder: (context, themeProvider, child) => SwitchListTile(
                 title: Text('Disable Dark Mode', 
-                style: Theme.of(context).textTheme.bodySmall,
+                style: TextStyle(
+                    fontSize: 20, // Adjust the font size here
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodySmall!.color,
+                )
                 ),
                 value: themeProvider.isDarkMode, // Access isDarkMode directly
                 

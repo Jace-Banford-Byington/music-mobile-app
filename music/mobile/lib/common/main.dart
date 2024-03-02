@@ -151,7 +151,7 @@ class HistoryCard extends StatelessWidget {
       margin: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.blue, width: 2.0),
+        border: Border.all(color: Colors.blueGrey, width: 1.0),
       ),
       child: Center(
         child: Text(
