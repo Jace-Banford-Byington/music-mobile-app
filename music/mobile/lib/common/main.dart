@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/common/music.dart';
 import 'package:mobile/common/navigation.dart';
+import 'package:mobile/common/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile/common/settings.dart';
@@ -77,6 +78,7 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           HomeScreen(),
           SettingsPage(),
+          Profile(isChecked: true)
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -91,6 +93,8 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.person_off_outlined),
+          label: "Profile")
         ],
       ),
     );
