@@ -1,12 +1,8 @@
-////Placeholder for assignment 
-
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:just_audio/just_audio.dart';
-
 
 Future<List<Song>> searchSongs() async {
   final response = await http.get(Uri.parse('https://api.deezer.com/search/track/?q=mothermother'));
@@ -25,7 +21,6 @@ Future<List<Song>> searchSongs() async {
   }
 }
 
-
 class Song {
   final int id;
   final String title;
@@ -39,36 +34,16 @@ class Song {
     required this.md5,
   });
 
+  factory Song.fromJson(Map<String, dynamic> json) {
+    final int id = json['id'] as int;
+    final String title = json['title'] as String;
+    final String url = json['link'] as String;
+    final String md5 = json['md5_image'] as String;
 
-factory Song.fromJson(Map<String, dynamic> json) {
-  final int id = json['id'] as int;
-  final String title = json['title'] as String;
-  final String url = json['link'] as String;
-  final String md5 = json['md5_image'] as String;
-
-  return Song(id: id, title: title, url: url, md5: md5);
+    return Song(id: id, title: title, url: url, md5: md5);
+  }
 }
 
-
-///Go search for music : search / track
-///https://api.deezer.com/search/track/${song}
-///
-///Go search for artist : search / artist
-///https://api.deezer.com/search/artist/${artist}
-///
-///Go search for podcast : search / podcast
-///https://api.deezer.com/search/podcast/${podcast}
-///
-///
-///go search for album : search / album
-///https://api.deezer.com/search/album/${}
-}
-
-
-
-///////////Where the audio will be played
-
-audioplayers.AudioPlayer audioPlayer = audioplayers.AudioPlayer();
 AudioPlayer justAudioPlayer = AudioPlayer();
 String songLink = "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjUhoO28tqEAxUMHDQIHYVQBjwQtwJ6BAgbEAI&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449";   
 
@@ -79,6 +54,3 @@ void playAudio(String url) async {
   await justAudioPlayer.play();
   print("Audio playing");
 }
-
-
-
