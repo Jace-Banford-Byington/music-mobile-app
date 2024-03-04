@@ -126,8 +126,9 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final song = songs[index];
                     return HistoryCard(
-                      image: Image.network(song.url),
+                      image: Image.network(song.md5),
                       label: song.title,
+                      url: song.url,
                     );
                   },
                 ),
@@ -143,24 +144,32 @@ class HomeScreen extends StatelessWidget {
 class HistoryCard extends StatelessWidget {
   final Image image;
   final String label;
+  final String url;
 
   const HistoryCard({
     required this.image,
     required this.label,
+    required this.url,
   });
 
-  @override
+ @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.blueGrey, width: 1.0),
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () {
+        // Play audio when history card is tapped
+        playAudio(url);
+      },
+      child: Container(
+        margin: EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.blueGrey, width: 1.0),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );

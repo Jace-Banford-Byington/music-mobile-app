@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:audioplayers/audioplayers.dart' as audioplayers;
+import 'package:just_audio/just_audio.dart';
 
 
 Future<List<Song>> searchSongs() async {
@@ -11,11 +13,9 @@ Future<List<Song>> searchSongs() async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
-    print('API Response: $responseData');
 
-    final List<dynamic> songsData = responseData['data'];
+    final List<dynamic> songsData = responseData['data'].take(5).toList();
     final List<Song> songs = songsData.map((songData) {
-      print('Song Data: $songData');
       return Song.fromJson(songData);
     }).toList();
 
@@ -63,3 +63,22 @@ factory Song.fromJson(Map<String, dynamic> json) {
 ///go search for album : search / album
 ///https://api.deezer.com/search/album/${}
 }
+
+
+
+///////////Where the audio will be played
+
+audioplayers.AudioPlayer audioPlayer = audioplayers.AudioPlayer();
+AudioPlayer justAudioPlayer = AudioPlayer();
+String songLink = "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjUhoO28tqEAxUMHDQIHYVQBjwQtwJ6BAgbEAI&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449";   
+
+void playAudio(String url) async {
+  final Uri uri = Uri.parse(url);
+  final audioSource = AudioSource.uri(uri);
+  await justAudioPlayer.setAudioSource(audioSource);
+  await justAudioPlayer.play();
+  print("Audio playing");
+}
+
+
+
