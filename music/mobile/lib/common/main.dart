@@ -101,7 +101,6 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class HomeScreen extends StatelessWidget {
-  final PageManager pageManager = PageManager();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -129,7 +128,6 @@ class HomeScreen extends StatelessWidget {
                       image: 'https://e-cdns-images.dzcdn.net/images/cover/${song.md5}/56x56-000000-80-0-0.jpg',
                       label: song.title,
                       url: song.url,
-                       pageManager: pageManager,
                     );
                   },
                 ),
@@ -146,13 +144,11 @@ class HistoryCard extends StatelessWidget {
   final String image;
   final String label;
   final String url;
-    final PageManager pageManager;
 
   const HistoryCard({
     required this.image,
     required this.label,
     required this.url,
-    required this.pageManager,
   });
 
  @override
@@ -160,7 +156,7 @@ class HistoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Play audio when history card is tapped
-        PageManager().play();
+        PageManager(url).play();
       },
       child: Container(
         margin: EdgeInsets.all(8.0),
