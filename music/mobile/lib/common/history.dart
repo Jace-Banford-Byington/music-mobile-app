@@ -1,6 +1,5 @@
 // save what was last played in db 
 import 'package:isar/isar.dart';
-import 'package:mobile/common/user.dart';
 
 
 part 'history.g.dart';
@@ -13,6 +12,6 @@ class History {
   String? artist;
   bool? liked;
 
-  @Backlink(to: "User")
-  final user = IsarLink<User>();
+  // @Backlink(to: "User")
+  // final user = IsarLink<User>();
 }

@@ -1,8 +1,106 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+
+
+class PageManager {
+  final progressNotifier = ValueNotifier<ProgressBarState>(
+    ProgressBarState(
+      current: Duration.zero,
+      buffered: Duration.zero,
+      total: Duration.zero,
+    ),
+  );
+  final buttonNotifier = ValueNotifier<ButtonState>(ButtonState.paused);
+
+  static const url =
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+
+  late AudioPlayer _audioPlayer;
+  PageManager() {
+    _init();
+  }
+
+  void _init() async {
+    _audioPlayer = AudioPlayer();
+    await _audioPlayer.setUrl(url);
+
+    _audioPlayer.playerStateStream.listen((playerState) {
+      final isPlaying = playerState.playing;
+      final processingState = playerState.processingState;
+      if (processingState == ProcessingState.loading ||
+          processingState == ProcessingState.buffering) {
+        buttonNotifier.value = ButtonState.loading;
+      } else if (!isPlaying) {
+        buttonNotifier.value = ButtonState.paused;
+      } else if (processingState != ProcessingState.completed) {
+        buttonNotifier.value = ButtonState.playing;
+      } else {
+        _audioPlayer.seek(Duration.zero);
+        _audioPlayer.pause();
+      }
+    });
+
+    _audioPlayer.positionStream.listen((position) {
+      final oldState = progressNotifier.value;
+      progressNotifier.value = ProgressBarState(
+        current: position,
+        buffered: oldState.buffered,
+        total: oldState.total,
+      );
+    });
+
+    _audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
+      final oldState = progressNotifier.value;
+      progressNotifier.value = ProgressBarState(
+        current: oldState.current,
+        buffered: bufferedPosition,
+        total: oldState.total,
+      );
+    });
+
+    _audioPlayer.durationStream.listen((totalDuration) {
+      final oldState = progressNotifier.value;
+      progressNotifier.value = ProgressBarState(
+        current: oldState.current,
+        buffered: oldState.buffered,
+        total: totalDuration ?? Duration.zero,
+      );
+    });
+  }
+
+  void play() {
+    _audioPlayer.play();
+  }
+
+  void pause() {
+    _audioPlayer.pause();
+  }
+
+  void seek(Duration position) {
+    _audioPlayer.seek(position);
+  }
+
+  void dispose() {
+    _audioPlayer.dispose();
+  }
+}
+
+class ProgressBarState {
+  ProgressBarState({
+    required this.current,
+    required this.buffered,
+    required this.total,
+  });
+  final Duration current;
+  final Duration buffered;
+  final Duration total;
+}
+
+enum ButtonState { paused, playing, loading }
 
 Future<List<Song>> searchSongs() async {
   final response = await http.get(Uri.parse('https://api.deezer.com/search/track/?q=mothermother'));
@@ -43,19 +141,3 @@ class Song {
     return Song(id: id, title: title, url: url, md5: md5);
   }
 }
-
-AudioPlayer justAudioPlayer = AudioPlayer();
-String songLink = "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjUhoO28tqEAxUMHDQIHYVQBjwQtwJ6BAgbEAI&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449";   
-
-void playAudio(String url) async {
-  final Uri uri = Uri.parse(url);
-  final audioSource = AudioSource.uri(uri);
-  await justAudioPlayer.setAudioSource(audioSource);
-  await justAudioPlayer.play();
-  print("Audio playing");
-}
-
-
-
-
-///stores what was last played :

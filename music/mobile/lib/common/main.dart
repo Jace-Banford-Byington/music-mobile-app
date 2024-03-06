@@ -101,6 +101,7 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class HomeScreen extends StatelessWidget {
+  final PageManager pageManager = PageManager();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -125,9 +126,10 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final song = songs[index];
                     return HistoryCard(
-                      image: Image.network(song.md5),
+                      image: 'https://e-cdns-images.dzcdn.net/images/cover/${song.md5}/56x56-000000-80-0-0.jpg',
                       label: song.title,
                       url: song.url,
+                       pageManager: pageManager,
                     );
                   },
                 ),
@@ -141,14 +143,16 @@ class HomeScreen extends StatelessWidget {
 }
 
 class HistoryCard extends StatelessWidget {
-  final Image image;
+  final String image;
   final String label;
   final String url;
+    final PageManager pageManager;
 
   const HistoryCard({
     required this.image,
     required this.label,
     required this.url,
+    required this.pageManager,
   });
 
  @override
@@ -156,7 +160,7 @@ class HistoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Play audio when history card is tapped
-        playAudio(url);
+        PageManager().play();
       },
       child: Container(
         margin: EdgeInsets.all(8.0),
@@ -164,11 +168,21 @@ class HistoryCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: Colors.blueGrey, width: 1.0),
         ),
-        child: Center(
-          child: Text(
+        child: Column(
+          children:[
+             Image.network(
+              image,
+              fit: BoxFit.cover, // Adjust the image to fit the container
+              width: double.infinity, // Set the image width to fill the container
+              height: 200, // Set the image height
+            ),
+            SizedBox(height: 8),
+
+            Text(
             label,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
+          ], 
         ),
       ),
     );
