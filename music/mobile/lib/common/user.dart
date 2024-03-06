@@ -1,6 +1,8 @@
-// import 'package:isar/isar.dart';
+import 'package:isar/isar.dart';
 
-// part 'user.g.dart';
+import 'history.dart';
+
+part 'user.g.dart';
 
 // @collection
 // class user {
@@ -13,3 +15,16 @@
 
 
 // }
+
+
+@collection 
+class User {
+  Id id = Isar.autoIncrement;
+  String? username;
+  bool? darkMode;
+
+
+  @Backlink(to: "History")
+  final history = IsarLink<History>();
+
+}
